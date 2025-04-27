@@ -28,9 +28,7 @@
   <input type="text" id="studentName" placeholder="Your Name">
 </div>
 
-<!-- Exercises will be dynamically inserted -->
 <div id="exercises"></div>
-
 <h2>Attempts Archive</h2>
 <table>
   <thead>
@@ -44,8 +42,59 @@
 </table>
 
 <script>
-const exercises = [...]; // same exercises array as before
-
+const exercises = [
+  {
+    type: 'select',
+    title: 'Superlatives - Easy',
+    question: 'Mount Everest is the (higher / highest) mountain in the world.',
+    options: ['higher', 'highest'],
+    answer: 'highest'
+  },
+  {
+    type: 'select',
+    title: 'Comparatives - Easy',
+    question: 'Summer is (hot / hotter) than winter.',
+    options: ['hot', 'hotter'],
+    answer: 'hotter'
+  },
+  {
+    type: 'select',
+    title: 'Could / Couldn\'t - Easy',
+    question: 'When I was a child, I (could / couldn\'t) swim very well.',
+    options: ['could', 'couldn\'t'],
+    answer: 'couldn\'t'
+  },
+  {
+    type: 'dragdrop',
+    title: 'Geographical Features - Medium',
+    question: 'A large body of salt water:',
+    words: ['lake', 'sea', 'river'],
+    answer: 'sea'
+  },
+  {
+    type: 'dragdrop',
+    title: 'Holiday Places - Easy',
+    question: 'A small house in the countryside:',
+    words: ['caravan', 'cottage', 'hotel'],
+    answer: 'cottage'
+  },
+  {
+    type: 'dialogue',
+    title: 'Dialogue Ordering - Travel Plans',
+    sentences: [
+      'Where are we going for our holidays?',
+      'I would love to visit Spain!',
+      'Great idea, let’s book it.',
+      'What about Italy?'
+    ],
+    correctOrder: [
+      'Where are we going for our holidays?',
+      'What about Italy?',
+      'I would love to visit Spain!',
+      'Great idea, let’s book it.'
+    ]
+  }
+];
 const container = document.getElementById('exercises');
 
 exercises.forEach((ex, index) => {
@@ -54,15 +103,15 @@ exercises.forEach((ex, index) => {
   div.innerHTML = `<h2>${index+1}. ${ex.title}</h2>`;
 
   if (ex.type === 'select') {
-    div.innerHTML += `<p>${ex.question}</p><select id="ex${index}">` + ex.options.map(opt => `<option value="${opt}">${opt}</option>`).join('') + '</select><br><button onclick="checkSelect(' + index + ')">Check</button><button onclick="resetSelect(' + index + ')">Reset</button><p id="result${index}"></p>';
+    div.innerHTML += `<p>${ex.question}</p><select id="ex${index}">` + ex.options.map(opt => `<option value="${opt}">${opt}</option>`).join('') + '</select><br><button onclick="checkSelect(' + index + ')">Check</button><button onclick="resetSelect(' + index + ')">Reset</button><p id="result' + index + '"></p>';
   }
 
   if (ex.type === 'dragdrop') {
-    div.innerHTML += '<p>' + ex.question + '</p>' + ex.words.map(w => `<div class='draggable' draggable='true' id='drag${index}_${w}'>${w}</div>`).join('') + `<div class='dropzone' id='drop${index}'></div><br><button onclick='checkDragDrop(${index})'>Check</button><button onclick='resetDragDrop(${index})'>Reset</button><p id='result${index}'></p>`;
+    div.innerHTML += '<p>' + ex.question + '</p>' + ex.words.map(w => `<div class="draggable" draggable="true" id="drag${index}_${w}">${w}</div>`).join('') + `<div class="dropzone" id="drop${index}"></div><br><button onclick="checkDragDrop(${index})">Check</button><button onclick="resetDragDrop(${index})">Reset</button><p id="result${index}"></p>`;
   }
 
   if (ex.type === 'dialogue') {
-    div.innerHTML += '<p>Drag and order the sentences correctly:</p>' + ex.sentences.map((s,i) => `<div class='draggable' draggable='true' id='dialog${index}_${i}'>${s}</div>`).join('') + Array(ex.sentences.length).fill().map((_,i) => `<div class='dropzone' id='dropdialog${index}_${i}'></div>`).join('') + `<br><button onclick='checkDialogue(${index})'>Check</button><button onclick='resetDialogue(${index})'>Reset</button><p id='result${index}'></p>`;
+    div.innerHTML += '<p>Drag and order the sentences correctly:</p>' + ex.sentences.map((s,i) => `<div class="draggable" draggable="true" id="dialog${index}_${i}">${s}</div>`).join('') + Array(ex.sentences.length).fill().map((_,i) => `<div class="dropzone" id="dropdialog${index}_${i}"></div>`).join('') + `<br><button onclick="checkDialogue(${index})">Check</button><button onclick="resetDialogue(${index})">Reset</button><p id="result${index}"></p>`;
   }
 
   container.appendChild(div);
@@ -159,6 +208,5 @@ function resetDialogue(index) {
   document.getElementById(`result${index}`).textContent = '';
 }
 </script>
-
 </body>
 </html>
